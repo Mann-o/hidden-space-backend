@@ -1,0 +1,54 @@
+@layout('layouts/admin')
+
+@section('breadcrumbs')
+  <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+  <li class="breadcrumb-item">Therapists</li>
+@endsection
+
+@section('content')
+
+  <h1>Therapists</h1>
+
+  @if(flashMessage('status') && flashMessage('status') === 'success')
+    <div class="alert alert-success alert-dismissable fade show" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h4 class="alert-heading">Success</h4>
+      <span>{{ flashMessage('message') }}</span>
+    </div>
+  @endif
+
+  <a href="/admin/therapists/new" class="btn btn-success">New Therapist</a>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Slug</th>
+        <th>Gender</th>
+        <th>Title</th>
+        <th>First Name(s)</th>
+        <th>Last Name(s)</th>
+        <th>Email Address</th>
+        <th>Telephone No.</th>
+        <th>Created</th>
+        <th>Last Updated</th>
+      </tr>
+    </thead>
+    <tbody>
+      @each(therapist in therapists)
+        <tr>
+          <td><a href="/admin/therapists/{{ therapist.slug }}">{{ therapist.slug }}</a></td>
+          <td>{{ therapist.gender === 'male' ? 'Male' : 'Female' }}</td>
+          <td>{{ therapist.title }}</td>
+          <td>{{ therapist.firstNames }}</td>
+          <td>{{ therapist.lastNames }}</td>
+          <td>{{ therapist.emailAddress }}</td>
+          <td>{{ therapist.telephoneNumber }}</td>
+          <td>{{ therapist.created }}</td>
+          <td>{{ therapist.lastUpdated }}</td>
+        </tr>
+      @endeach
+    </tbody>
+  </table>
+@endsection

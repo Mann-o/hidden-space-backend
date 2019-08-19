@@ -1,0 +1,56 @@
+{
+  "name": "hidden-space-backend",
+  "version": "1.0.0",
+  "description": "CMS for HiddenSpace website",
+  "main": "server.js",
+  "scripts": {
+    "dev": "adonis serve --dev",
+    "dev:debug": "adonis serve --dev --debug",
+    "bundle": "adonis bundle --production",
+    "start": "cross-env NODE_ENV=production node server.js",
+    "migrate:dev": "adonis migration:refresh && adonis seed",
+    "migrate:production": "adonis migration:run --force"
+  },
+  "author": "Liam Potter <me@liam-potter.co.uk>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@adonisjs/ace": "^5.0.8",
+    "@adonisjs/auth": "^3.0.7",
+    "@adonisjs/bodyparser": "^2.0.9",
+    "@adonisjs/cors": "^1.0.7",
+    "@adonisjs/drive": "^1.0.4",
+    "@adonisjs/fold": "^4.0.9",
+    "@adonisjs/framework": "^5.0.13",
+    "@adonisjs/ignitor": "^2.0.8",
+    "@adonisjs/lucid": "^6.1.3",
+    "@adonisjs/mail": "^3.0.9",
+    "@adonisjs/redis": "^2.0.7",
+    "@adonisjs/session": "^1.0.29",
+    "@adonisjs/shield": "^1.0.8",
+    "@adonisjs/validator": "^5.0.6",
+    "adonis-acl": "^1.1.1",
+    "adonis-bundler": "^1.0.1",
+    "adonis-cache": "^0.3.4",
+    "adonis-kraken": "^1.0.1",
+    "aws-sdk": "^2.507.0",
+    "axios": "^0.19.0",
+    "inline-css ": "^2.4.2",
+    "lodash": "^4.17.15",
+    "pg": "^7.11.0",
+    "uuid": "^3.3.2",
+    "uuid-validate": "^0.0.3",
+    "vue": "^2.6.10"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "faker": "^4.1.0",
+    "stylus": "^0.54.5"
+  },
+  "autoload": {
+    "App": "./app"
+  },
+  "alias": {
+    "vue": "./node_modules/vue/dist/vue.common.js"
+  }
+}

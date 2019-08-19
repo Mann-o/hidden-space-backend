@@ -1,0 +1,88 @@
+@layout('layouts/admin')
+
+@section('breadcrumbs')
+  <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+  <li class="breadcrumb-item"><a href="/admin/spaces">Spaces</a></li>
+  <li class="breadcrumb-item active" aria-current="page">{{ space.address }}</li>
+@endsection
+
+@section('content')
+  <h1>{{ space.address }}</h1>
+
+  @if(flashMessage('status') && flashMessage('status') === 'success')
+    <div class="alert alert-success alert-dismissable fade show" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h4 class="alert-heading">Success</h4>
+      <span>Space updated successfully.</span>
+    </div>
+  @endif
+
+  <form action="/admin/spaces/{{ space.slug }}" method="POST" id="space-form">
+    {{ csrfField() }}
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="slug">Slug</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="slug" name="slug" aria-describedby="slugHelp" placeholder="Enter Slug" value="{{ space.slug == null ? '' : space.slug }}">
+        <small id="slugHelp" class="form-text text-muted">This is the unique identifier for the Space used in the website URL</small>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="property_number">Property Number</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="property_number" name="property_number" placeholder="Enter Property Number" value="{{ space.propertyNumber == null ? '' : space.propertyNumber }}">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="building_name">Building Name</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="building_name" name="building_name" placeholder="Enter Building Name" value="{{ space.buildingName == null ? '' : space.buildingName }}">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="street_address">Street Address</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="street_address" name="street_address" placeholder="Enter Street Address" value="{{ space.streetAddress == null ? '' : space.streetAddress }}">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="city">City</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="city" name="city" placeholder="Enter City" value="{{ space.city == null ? '' : space.city }}">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Created</label>
+      <div class="col-sm-10">
+        <input type="text" readonly class="form-control-plaintext" value="{{ space.created == null ? '' : space.created }}">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Last Updated</label>
+      <div class="col-sm-10">
+        <input type="text" readonly class="form-control-plaintext" value="{{ space.lastUpdated == null ? '' : space.lastUpdated }}">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary" form="space-form">Save Changes</button>
+  </form>
+
+  <div style="padding-top:40px">
+    <button class="btn btn-danger" data-toggle="modal" data-target="#confirmDelete">Delete Space</button>
+  </div>
+
+  @component('components.modal', {
+    id: 'confirmDelete',
+    centered: true,
+    header: 'Delete Space?',
+    closeable: true,
+  })
+    @slot('content')
+      <p>This operation is irreversible - are you sure you wish to continue?</p>
+    @endslot
+    @slot('footer')
+      <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      <a href="/admin/spaces/{{ space.slug }}/delete" class="btn btn-danger">Delete Space</a>
+    @endslot
+  @endcomponent
+@endsection

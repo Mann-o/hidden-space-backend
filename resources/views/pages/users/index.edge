@@ -1,0 +1,44 @@
+@layout('layouts/admin')
+
+@section('breadcrumbs')
+  <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+  <li class="breadcrumb-item">Users</li>
+@endsection
+
+@section('content')
+
+  <h1>Users</h1>
+
+  @if(flashMessage('status') && flashMessage('status') === 'success')
+    <div class="alert alert-success alert-dismissable fade show" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h4 class="alert-heading">Success</h4>
+      <span>{{ flashMessage('message') }}</span>
+    </div>
+  @endif
+
+  <a href="/admin/users/new" class="btn btn-success">New User</a>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Email Address</th>
+        <th>Created</th>
+        <th>Last Updated</th>
+      </tr>
+    </thead>
+    <tbody>
+      @each(user in users)
+        <tr>
+          <td><a href="/admin/users/{{ user.username }}">{{ user.username }}</a></td>
+          <td>{{ user.emailAddress }}</td>
+          <td>{{ user.created }}</td>
+          <td>{{ user.lastUpdated }}</td>
+        </tr>
+      @endeach
+    </tbody>
+  </table>
+@endsection

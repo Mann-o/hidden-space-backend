@@ -1,0 +1,31 @@
+@layout('layouts/admin')
+
+@section('breadcrumbs')
+  <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+  <li class="breadcrumb-item"><a href="/admin/media">Media</a></li>
+  <li class="breadcrumb-item">Upload</li>
+@endsection
+
+@section('content')
+  <h1>Upload Media</h1>
+
+  @if(flashMessage('status') && (flashMessage('status') === 'error'))
+    <div class="alert alert-danger alert-dismissable fade show" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h4 class="alert-heading">Error</h4>
+      <span>{{ flashMessage('message') }}</span>
+    </div>
+  @endif
+
+  <form action="/admin/media/upload" method="post" id="upload-form" enctype="multipart/form-data">
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="files[]">File(s)</label>
+      <div class="col-sm-10">
+        <input type="file" name="files[]" accept=".png,.jpg,.jpeg" multiple>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary" form="upload-form">Upload</button>
+  </form>
+@endsection

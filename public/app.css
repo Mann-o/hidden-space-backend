@@ -1,0 +1,2 @@
+.gallery-images{display:grid;grid-template-columns:repeat(5,1fr);grid-gap:2rem}.gallery-image{border-radius:5px;border:1px solid #fff;background-color:#fff;transition:border-color .2s,background-color .2s;padding:1rem;cursor:pointer;text-align:center}.gallery-image img{max-width:200px;max-height:100px}.gallery-image--selected{background-color:#d4edda;border-color:#c3e6cb}
+/*# sourceMappingURL=/app.css.map */

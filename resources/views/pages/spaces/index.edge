@@ -1,0 +1,50 @@
+@layout('layouts/admin')
+
+@section('breadcrumbs')
+  <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+  <li class="breadcrumb-item">Spaces</li>
+@endsection
+
+@section('content')
+
+  <h1>Spaces</h1>
+
+  @if(flashMessage('status') && flashMessage('status') === 'success')
+    <div class="alert alert-success alert-dismissable fade show" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h4 class="alert-heading">Success</h4>
+      <span>{{ flashMessage('message') }}</span>
+    </div>
+  @endif
+
+  <a href="/admin/spaces/new" class="btn btn-success">New Space</a>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Slug</th>
+        <th>Property Number</th>
+        <th>Building Name</th>
+        <th>Street Address</th>
+        <th>City</th>
+        <th>Created</th>
+        <th>Last Updated</th>
+      </tr>
+    </thead>
+    <tbody>
+      @each(space in spaces)
+        <tr>
+          <td><a href="/admin/spaces/{{ space.slug }}">{{ space.slug }}</a></td>
+          <td>{{ (space.propertyNumber == null) ? '-' : space.propertyNumber }}</td>
+          <td>{{ (space.buildingName == null) ? '-' : space.buildingName }}</td>
+          <td>{{ (space.streetAddress == null) ? '-' : space.streetAddress }}</td>
+          <td>{{ space.city }}</td>
+          <td>{{ space.created }}</td>
+          <td>{{ space.lastUpdated }}</td>
+        </tr>
+      @endeach
+    </tbody>
+  </table>
+@endsection

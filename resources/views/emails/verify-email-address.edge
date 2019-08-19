@@ -1,0 +1,11 @@
+@layout('emails/layouts/default')
+
+@section('email-content')
+  <h1>Thank you for registering with HiddenSpace, {{ username }}!</h1>
+
+  <p>To fully activate your account please click the following link and verify ownership of your email address:<p>
+
+  <p><a href="https://thehiddenspace.co.uk/verify-email?email={{email_address}}&token={{email_verification_token}}">Activate Account</a></p>
+
+  <p>Alternatively, you can copy and paste the following link into the address bar of your browser: <code>https://thehiddenspace.co.uk/verify-email?email={{ email_address }}&token={{ email_verification_token }}</code></p>
+@endsection

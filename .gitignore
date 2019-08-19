@@ -1,0 +1,17 @@
+# npm/Yarn
+node_modules
+yarn-error.log
+
+# Adonis directory for storing temporary files
+tmp
+
+# Environment variables, never commit this file!
+.env
+
+# IDE directories
+.history
+.idea
+.vscode
+
+# Maintenance mode file
+down
