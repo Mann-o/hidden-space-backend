@@ -10,12 +10,8 @@ class AuthController {
   }
 
   async login ({ auth, request, response, session }) {
-    const { login_id, password, target } = request.post()
+    const { login_id, password } = request.post()
 
-    if (login_id == null || login_id === '') return this._loginError(response, session, 'Login ID field must be completed', target)
-    if (password == null || password === '') return this._loginError(response, session, 'Password field must be completed', target)
-
-    try {
       const user = await User
         .query()
         .select(['id', 'username', 'email_address', 'last_logged_in'])
@@ -23,27 +19,28 @@ class AuthController {
         .orWhereRaw('lower(email_address) = ?', login_id.toLowerCase())
         .first()
 
+    try {
       if (user != null) {
-        await auth.attempt(user.email_address, password)
+        const payload = await auth.attempt(user.email_address, password)
         user.last_logged_in = new Date()
         await user.save()
-        return response.redirect((target == null || target === 'null' || target === '') ? '/admin' : target)
-      } else {
-        return this._loginError(response, session, 'Invalid Login ID and/or Password', target)
+        return { status: 'success', payload }
       }
-    } catch (error) {
-      return this._loginError(response, session, error.message, target)
-    }
+    } catch (e) {}
+
+    return response
+			.header('WWW_Authenticate', 'Bearer token_type="JWT"')
+			.status(401)
+			.json({
+				status: 'error',
+				error: 'Invalid Login ID and/or password',
+			})
   }
 
-  async logout ({ auth, response }) {
-    await auth.logout()
-    return response.redirect('/admin/login')
-  }
+  async getUser ({ auth }) {
+    const user = await auth.getUser()
 
-  _loginError (response, session, errorMessage, target) {
-    session.flash({ error: errorMessage })
-    return response.redirect(`/admin/login${target != null ? `?target=${encodeURIComponent(target)}` : ''}`)
+    return { user }
   }
 }
 

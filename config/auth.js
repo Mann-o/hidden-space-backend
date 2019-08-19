@@ -3,7 +3,7 @@
 const Env = use('Env')
 
 const AuthConfig = {
-  authenticator: 'session',
+  authenticator: 'jwt',
 
   session: {
     serializer: 'lucid',

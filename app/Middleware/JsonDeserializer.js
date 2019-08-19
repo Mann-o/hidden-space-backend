@@ -4,7 +4,7 @@ const _ = require('lodash')
 
 class JsonDeserializer {
   async handle ({ request }, next) {
-    request._data = _.mapKeys(request._data, _.rearg(_.snakeCase, 1))
+    request.body = _.mapKeys(request._body, _.rearg(_.snakeCase, 1))
 
     return next()
   }

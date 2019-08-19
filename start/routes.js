@@ -8,7 +8,7 @@ const Therapist = use('Therapist')
 const User = use('User')
 
 Route.get('admin/login', 'AuthController.renderLogin')
-Route.post('admin/login', 'AuthController.login')
+// Route.post('admin/login', 'AuthController.login')
 Route.get('admin/logout', 'AuthController.logout')
 
 Route
@@ -75,6 +75,9 @@ Route
 
 Route
   .group('api', () => {
+    Route.post('/auth/login', 'AuthController.login').validator('Auth/Login')
+    Route.get('/auth/user', 'AuthController.getUser')
+
     Route.get('/', async () => {
       const [spaceCount, therapistCount, postCount, userCount, mediaCount] = await Promise.all([
         await Space.getCount(),
@@ -108,4 +111,5 @@ Route
   .prefix('api/v1')
   .middleware([
     'check-app-key',
+    'json-deserializer',
   ])

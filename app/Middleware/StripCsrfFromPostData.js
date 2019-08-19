@@ -13,7 +13,7 @@ class StripCsrfFromPostData {
    * @param {function} next
    */
   async handle ({ request }, next) {
-    request._data = _.omit(request.post(), ['_csrf'])
+    request.body = _.omit(request.post(), ['_csrf'])
 
     return next()
   }

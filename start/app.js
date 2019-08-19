@@ -10,6 +10,7 @@ const aceProviders = [
 
 const aliases = {
   BaseModel: 'App/Models/BaseModel',
+  BaseValidator: 'App/Validators/BaseValidator',
   Cache: 'Adonis/Addons/Cache',
   CustomHelpers: 'App/Helpers',
   Image: 'App/Models/Image',
