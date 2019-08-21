@@ -1,5 +1,6 @@
 'use strict'
 
+const format = require('date-fns/format')
 const Model = use('Model')
 
 class BaseModel extends Model {
@@ -39,7 +40,7 @@ class BaseModel extends Model {
    *
    */
   static castDates (field, value) {
-    return this._formatDateTimeAsUTCString(value)
+    return format(new Date(value), `yyyy-MM-dd'T'HH:mm:ssXX`)
   }
 
   /**

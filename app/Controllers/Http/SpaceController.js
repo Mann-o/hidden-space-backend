@@ -53,18 +53,23 @@ class SpaceController {
     return response.redirect('/admin/spaces')
   }
 
-  async update ({ params: { slug }, request, response, session }) {
+  async update ({ params: { id }, request, response, session }) {
     const space = await Space
       .query()
-      .where({ slug })
+      .where({ id })
       .first()
-      if (space != null) {
-        space.merge(request._data)
-        await space.save()
-        await this._clearCachedSpaces(space.slug)
-        session.flash({ status: 'success' })
-        return response.redirect(`/admin/spaces/${space.slug}`)
-      }
+    if (space != null) {
+      space.merge(request.only([
+        'slug',
+        'property_number',
+        'building_name',
+        'street_address',
+        'city',
+      ]))
+      await space.save()
+      await this._clearCachedSpaces(space.slug)
+      return { status: 'success', space }
+    }
     return response.notFound()
   }
 
@@ -74,9 +79,8 @@ class SpaceController {
       .where({ slug })
       .first()
     await space.delete()
-    session.flash({ status: 'success', message: 'Space deleted successfully.' })
     await this._clearCachedSpaces()
-    return response.redirect('/admin/spaces')
+    return { status: 'success' }
   }
 
   async apiIndex () {
