@@ -32,7 +32,7 @@ class TherapistController {
     return view.render('pages.therapists.create', { media })
   }
 
-  async store ({ request, response, session }) {
+  async store ({ request }) {
     const data = request.only([
       'slug',
       'gender',
@@ -41,64 +41,47 @@ class TherapistController {
       'last_names',
       'email_address',
       'telephone_number',
-      'biography',
       'image_id',
+      'biography',
     ])
-
-    const validation = await validateAll(data, {
-      slug: 'required|unique:therapists,slug',
-      gender: 'required|in:male,female',
-      title: 'required|min:2',
-      first_names: 'required|min:2',
-      last_names: 'required|min:2',
-    }, {
-      'slug.required': 'Please provide a slug',
-      'slug.unique': 'Slug already in use',
-      'title.required': 'Please provide a title',
-      'title.min': 'Title must be at least 2 characters',
-      'first_names.required': 'Please provide first name(s)',
-      'first_names.min': 'First name(s) must be at least 2 characters',
-      'last_names.required': 'Please provide last name(s)',
-      'last_names.min': 'Last name(s) must be at least 2 characters',
-    })
-
-    if (validation.fails()) {
-      session
-        .withErrors(validation.messages())
-        .flashAll()
-      return response.redirect('back')
-    }
 
     await Therapist.create(data)
     await this._clearCachedTherapists()
-    session.flash({ status: 'success', message: 'Therapist created successfully.' })
-    return response.redirect('/admin/therapists')
+    return { status: 'success' }
   }
 
-  async update ({ params: { slug }, request, response, session }) {
+  async update ({ params: { id }, request, response }) {
     const therapist = await Therapist
       .query()
-      .where({ slug })
+      .where({ id })
       .first()
     if (therapist != null) {
-      therapist.merge(request._data)
+      therapist.merge(request.only([
+        'slug',
+        'gender',
+        'title',
+        'first_names',
+        'last_names',
+        'email_address',
+        'telephone_number',
+        'image_id',
+        'biography',
+      ]))
       await therapist.save()
       await this._clearCachedTherapists(therapist.slug)
-      session.flash({ status: 'success' })
-      return response.redirect(`/admin/therapists/${therapist.slug}`)
+      return { status: 'success', therapist }
     }
     return response.notFound()
   }
 
-  async destroy ({ params: { slug }, response, session }) {
-    const therapist = await Therapist
+  async destroy ({ params: { slug } }) {
+    const therapists = await Therapist
       .query()
       .where({ slug })
       .first()
-    await therapist.delete()
-    session.flash({ status: 'success', message: 'Therapist deleted successfully.' })
+    await therapists.delete()
     await this._clearCachedTherapists()
-    return response.redirect('/admin/therapists')
+    return { status: 'success' }
   }
 
   async apiIndex () {

@@ -40,7 +40,7 @@ Route
 
     Route.get('spaces', 'SpaceController.index')
     Route.get('spaces/new', 'SpaceController.create')
-    Route.post('spaces/new', 'SpaceController.store')
+
     Route.get('spaces/:slug', 'SpaceController.show')
     // Route.post('spaces/:slug', 'SpaceController.update').middleware(['strip-csrf-from-post-data', 'json-deserializer'])
     Route.get('spaces/:slug/delete', 'SpaceController.destroy')
@@ -97,12 +97,19 @@ Route
     })
     Route.get('users', 'UserController.apiIndex')
     Route.get('users/:username', 'UserController.apiShow')
+
     Route.get('spaces', 'SpaceController.apiIndex')
     Route.get('spaces/:slug', 'SpaceController.apiShow')
     Route.patch('spaces/:id', 'SpaceController.update').validator('Space/Update')
+    Route.post('spaces', 'SpaceController.store').validator('Space/Store')
     Route.delete('spaces/:slug', 'SpaceController.destroy')
+
     Route.get('therapists', 'TherapistController.apiIndex')
     Route.get('therapists/:slug', 'TherapistController.apiShow')
+    Route.patch('therapists/:id', 'TherapistController.update').validator('Therapist/Update')
+    Route.post('therapists', 'TherapistController.store').validator('Therapist/Store')
+    Route.delete('therapists/:slug', 'TherapistController.destroy')
+
     Route.get('posts', 'PostController.apiIndex')
     Route.get('posts/:slug', 'PostController.apiShow')
     Route.post('verify-email-address', 'UserController.apiVerifyEmailAddress')

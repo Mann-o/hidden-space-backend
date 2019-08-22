@@ -22,7 +22,7 @@ class SpaceController {
     return view.render('pages.spaces.create')
   }
 
-  async store ({ request, response, session }) {
+  async store ({ request }) {
     const data = request.only([
       'slug',
       'property_number',
@@ -31,29 +31,12 @@ class SpaceController {
       'city',
     ])
 
-    const validation = await validateAll(data, {
-      slug: 'required|unique:spaces,slug',
-      city: 'required',
-    }, {
-      'slug.required': 'Please provide a slug',
-      'slug.unique': 'Slug already in use',
-      'city.required': 'Please provide a city',
-    })
-
-    if (validation.fails()) {
-      session
-        .withErrors(validation.messages())
-        .flashAll()
-      return response.redirect('back')
-    }
-
     await Space.create(data)
     await this._clearCachedSpaces()
-    session.flash({ status: 'success', message: 'Space created successfully.' })
-    return response.redirect('/admin/spaces')
+    return { status: 'success' }
   }
 
-  async update ({ params: { id }, request, response, session }) {
+  async update ({ params: { id }, request, response }) {
     const space = await Space
       .query()
       .where({ id })
@@ -73,7 +56,7 @@ class SpaceController {
     return response.notFound()
   }
 
-  async destroy ({ params: { slug }, response, session }) {
+  async destroy ({ params: { slug } }) {
     const space = await Space
       .query()
       .where({ slug })
