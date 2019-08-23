@@ -24,7 +24,7 @@ class Space extends BaseModel {
   }
 
   getAddress () {
-    return `${this.building_name}, ${this.street_address}, ${this.city}`
+    return `${this.building_name}, ${this.street_address}`
   }
 }
 

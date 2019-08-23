@@ -6,7 +6,7 @@ const Therapist = use('Therapist')
 const { validateAll } = use('Validator')
 
 class TherapistController {
-  async index ({ view }) {
+  async index () {
     const therapists = await Cache.remember('therapists', 30, async () => {
       return (
         await Therapist
@@ -15,15 +15,14 @@ class TherapistController {
           .fetch()
       ).toJSON()
     })
-    return view.render('pages.therapists.index', { therapists })
+    return therapists
   }
 
-  async show ({ params: { slug }, response, view }) {
+  async show ({ params: { slug }, response }) {
     const therapist = await this._getTherapist({ slug })
-    const media = await Cache.remember('media', 30, async () => Image.all())
 
     return (therapist != null)
-      ? view.render('pages.therapists.show', { therapist, media })
+      ? therapist
       : response.notFound()
   }
 

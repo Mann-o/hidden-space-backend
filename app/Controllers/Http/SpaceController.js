@@ -5,16 +5,16 @@ const Space = use('Space')
 const { validateAll } = use('Validator')
 
 class SpaceController {
-  async index ({ view }) {
+  async index () {
     const spaces = await Cache.remember('spaces', 30, async () => Space.all())
-    return view.render('pages.spaces.index', { spaces: spaces.sort((a, b) => a.id - b.id) })
+    return spaces
   }
 
-  async show ({ params: { slug }, response, view }) {
+  async show ({ params: { slug }, response }) {
     const space = await this._getSpace({ slug })
 
     return (space != null)
-      ? view.render('pages.spaces.show', { space })
+      ? space
       : response.notFound()
   }
 

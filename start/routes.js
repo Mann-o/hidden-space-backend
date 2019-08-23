@@ -98,14 +98,14 @@ Route
     Route.get('users', 'UserController.apiIndex')
     Route.get('users/:username', 'UserController.apiShow')
 
-    Route.get('spaces', 'SpaceController.apiIndex')
-    Route.get('spaces/:slug', 'SpaceController.apiShow')
+    Route.get('spaces', 'SpaceController.index')
+    Route.get('spaces/:slug', 'SpaceController.show')
     Route.patch('spaces/:id', 'SpaceController.update').validator('Space/Update')
     Route.post('spaces', 'SpaceController.store').validator('Space/Store')
     Route.delete('spaces/:slug', 'SpaceController.destroy')
 
-    Route.get('therapists', 'TherapistController.apiIndex')
-    Route.get('therapists/:slug', 'TherapistController.apiShow')
+    Route.get('therapists', 'TherapistController.index')
+    Route.get('therapists/:slug', 'TherapistController.show')
     Route.patch('therapists/:id', 'TherapistController.update').validator('Therapist/Update')
     Route.post('therapists', 'TherapistController.store').validator('Therapist/Store')
     Route.delete('therapists/:slug', 'TherapistController.destroy')
