@@ -6,7 +6,7 @@ class TherapistUpdateValidator extends BaseValidator {
   get rules () {
     return {
       id: 'required',
-      slug: 'required|unique:spaces,slug'
+      slug: `required|unique:therapists,slug,id,${this.ctx.params.id}`
     }
   }
 
