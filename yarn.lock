@@ -1515,10 +1515,10 @@ atob@^2.1.1:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-aws-sdk@^2.514.0:
-  version "2.514.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.514.0.tgz#fe1cc76eb93982b3d6062866a1bc0fd501a02ee5"
-  integrity sha512-QKfmUJhn8iapnmx1pc86zLuJIKj5ereMz/ujjaFxMl6zKyypzdMJbNcZQHSqyQyVoU/EDsHt838L4sWbwVLCNQ==
+aws-sdk@^2.527.0:
+  version "2.527.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.527.0.tgz#79a770329b41219898d5f3f6407d4c838d382e4c"
+  integrity sha512-2HIKiLlUw+CpRiopXbHejpgBcVUtHGkS3RbHdO4spcgOVqWbrRIjnfxFJcQlR2Fl+H0GBZ2VH63k696DzO4g9g==
   dependencies:
     buffer "4.9.1"
     events "1.1.1"
@@ -2367,13 +2367,20 @@ create-output-stream@0.0.1:
   dependencies:
     mkdirp "^0.5.1"
 
-cross-env@^5.1.0, cross-env@^5.2.0:
+cross-env@^5.1.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-5.2.0.tgz#6ecd4c015d5773e614039ee529076669b9d126f2"
   integrity sha512-jtdNFfFW1hB7sMhr/H6rW1Z45LFqyI431m3qU6bFXcQ3Eh7LtBuG3h74o7ohHZ3crrRkkqHlo4jYHFPcjroANg==
   dependencies:
     cross-spawn "^6.0.5"
     is-windows "^1.0.0"
+
+cross-env@^5.2.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-5.2.1.tgz#b2c76c1ca7add66dc874d11798466094f551b34d"
+  integrity sha512-1yHhtcfAd1r4nwQgknowuUNfIT9E8dOMMspC36g45dN+iD1blloi7xp8X/xAIDnjHWyt1uQ8PHk2fkNaym7soQ==
+  dependencies:
+    cross-spawn "^6.0.5"
 
 cross-spawn@^6.0.4, cross-spawn@^6.0.5:
   version "6.0.5"
@@ -2651,10 +2658,10 @@ data-urls@^1.1.0:
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
 
-date-fns@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.0.0.tgz#52f05c6ae1fe0e395670082c72b690ab781682d0"
-  integrity sha512-nGZDA64Ktq5uTWV4LEH3qX+foV4AguT5qxwRlJDzJtf57d4xLNwtwrfb7SzKCoikoae8Bvxf0zdaEG/xWssp/w==
+date-fns@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.1.0.tgz#0d7e806c3cefe14a943532dbf968995ccfd46bd9"
+  integrity sha512-eKeLk3sLCnxB/0PN4t1+zqDtSs4jb4mXRSTZ2okmx/myfWyDqeO4r5nnmA5LClJiCwpuTMeK2v5UQPuE4uMaxA==
 
 date-now@^0.1.4:
   version "0.1.4"
