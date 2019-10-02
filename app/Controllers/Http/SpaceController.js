@@ -66,38 +66,20 @@ class SpaceController {
     return { status: 'success' }
   }
 
-  async apiIndex () {
-    return Cache.remember('spaces', 30, async () => Space.all())
-  }
-
-  async apiShow ({ params: { slug }, response }) {
-    const space = await this._getSpace({ slug })
-    return (space != null) ? space : response
-      .status(404)
-      .json({
-        status: 'error',
-        error: 'Space not found',
-      })
-  }
-
   async _getSpace ({ slug }) {
     const spaceInCache = await Cache.get(`space:${slug}`)
 
-    if (spaceInCache != null) {
-      return spaceInCache
-    } else {
-      const space = await Space
-        .query()
-        .where({ slug })
-        .first()
+    if (spaceInCache != null) return spaceInCache
 
-      if (space != null) {
-        await Cache.put(`space:${slug}`, space.toJSON(), 30)
-        return space.toJSON()
-      }
+    const space = await Space
+      .query()
+      .where({ slug })
+      .first()
 
-      return null
-    }
+    if (space == null) return null
+
+    await Cache.put(`space:${slug}`, space.toJSON(), 30)
+    return space.toJSON()
   }
 
   async _clearCachedSpaces (slug = null) {

@@ -9,21 +9,17 @@ const User = use('User')
 const { validateAll } = use('Validator')
 
 class UserController {
-  async index ({ view }) {
+  async index () {
     const users = await Cache.remember('users', 30, async () => User.all())
-    return view.render('pages.users.index', { users })
+    return users
   }
 
   async show ({ params: { username }, response, view }) {
     const user = await this._getUser({ username })
 
     return (user != null)
-      ? view.render('pages.users.show', { user })
+      ? user
       : response.notFound()
-  }
-
-  create ({ view }) {
-    return view.render('pages.users.create')
   }
 
   async store ({ request, response, session }) {

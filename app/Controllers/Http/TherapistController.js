@@ -83,39 +83,21 @@ class TherapistController {
     return { status: 'success' }
   }
 
-  async apiIndex () {
-    return Cache.remember('therapists', 30, async () => Therapist.all())
-  }
-
-  async apiShow ({ params: { slug }, response }) {
-    const therapist = await this._getTherapist({ slug })
-    return (therapist != null) ? therapist : response
-      .status(404)
-      .json({
-        status: 'error',
-        error: 'Therapist not found',
-      })
-  }
-
   async _getTherapist ({ slug }) {
     const therapistInCache = await Cache.get(`therapist:${slug}`)
 
-    if (therapistInCache != null) {
-      return therapistInCache
-    } else {
-      const therapist = await Therapist
-        .query()
-        .with('image')
-        .where({ slug })
-        .first()
+    if (therapistInCache != null) return therapistInCache
 
-      if (therapist != null) {
-        await Cache.put(`therapist:${slug}`, therapist.toJSON(), 30)
-        return therapist.toJSON()
-      }
+    const therapist = await Therapist
+      .query()
+      .with('image')
+      .where({ slug })
+      .first()
 
-      return null
-    }
+    if (therapist == null) return null
+
+    await Cache.put(`therapist:${slug}`, therapist.toJSON(), 30)
+    return therapist.toJSON()
   }
 
   async _clearCachedTherapists (slug) {

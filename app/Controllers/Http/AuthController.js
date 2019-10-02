@@ -3,13 +3,7 @@
 const User = use('User')
 
 class AuthController {
-  async renderLogin ({ view, request }) {
-    return view.render('pages.login', {
-      target: request.get().target,
-    })
-  }
-
-  async login ({ auth, request, response, session }) {
+  async login ({ auth, request, response }) {
     const { login_id, password } = request.post()
 
       const user = await User
@@ -37,9 +31,8 @@ class AuthController {
 			})
   }
 
-  async getUser ({ auth }) {
+  async getAuthenticatedUser ({ auth }) {
     const user = await auth.getUser()
-
     return { user }
   }
 }
