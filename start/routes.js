@@ -11,7 +11,6 @@ Route
   .prefix('api/v1')
   .middleware([
     'check-app-key',
-    'json-deserializer',
   ])
 
 
