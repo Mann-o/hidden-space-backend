@@ -4,7 +4,7 @@ const BaseModel = use('BaseModel')
 
 class Post extends BaseModel {
   author () {
-    return this.belongsTo('User')
+    return this.belongsTo('User', 'author_id', 'id')
   }
 
   space () {

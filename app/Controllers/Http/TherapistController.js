@@ -100,9 +100,11 @@ class TherapistController {
     return therapist.toJSON()
   }
 
-  async _clearCachedTherapists (slug) {
+  async _clearCachedTherapists (slug = null) {
     await Cache.forget('therapists')
-    await Cache.forget(`therapist:${slug}`)
+    if (slug != null) {
+      await Cache.forget(`therapist:${slug}`)
+    }
   }
 }
 

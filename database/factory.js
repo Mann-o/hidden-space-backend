@@ -36,7 +36,7 @@ Factory.blueprint('Post', (faker, i) => {
     slug: helpers.slugify(title).toLowerCase(),
     title,
     content: lorem.paragraphs(random.number({ min: 3, max: 10 })),
-    author: random.number({ min: 1, max: 5 })
+    author_id: random.number({ min: 1, max: 5 })
   }
 })
 

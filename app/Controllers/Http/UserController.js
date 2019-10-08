@@ -46,8 +46,6 @@ class UserController {
       'password_confirmation.same': 'Re-enter password field does not match password field',
     })
 
-    console.log(validation.messages())
-
     if (validation.fails()) {
       session
         .withErrors(validation.messages())

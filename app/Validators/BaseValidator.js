@@ -4,7 +4,6 @@ const Env = use('Env')
 
 class BaseValidator {
   async fails (errors) {
-    console.log('fails')
     return this.ctx.response.status(422).send({
       status: 'failed',
       errors: Env.get('NODE_ENV' === 'production')

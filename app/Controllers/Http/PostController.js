@@ -5,7 +5,14 @@ const Post = use('Post')
 
 class PostController {
   async index () {
-    return Cache.remember('posts', 30, async () => Post.all())
+    const posts = await Cache.remember('posts', 30, async () => {
+      return (await Post
+        .query()
+        .with('author')
+        .fetch()
+      ).toJSON()
+    })
+    return posts
   }
 
   async show ({ params: { slug }, response }) {
@@ -56,6 +63,7 @@ class PostController {
 
     const post = await Post
       .query()
+      .with('author')
       .where({ slug })
       .first()
 

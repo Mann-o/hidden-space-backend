@@ -10,21 +10,17 @@ const Image = use('Image')
 const Kraken = use('Kraken')
 
 class MediaController {
-  async index ({ view }) {
+  async index () {
     const media = await Cache.remember('images', 30, async () => Image.all())
-    return view.render('pages.media.index', { media })
+    return media
   }
 
-  async show ({ params: { hash }, response, view }) {
+  async show ({ params: { hash }, response }) {
     const image = await this._getMedia({ hash })
 
     return (image != null)
-      ? view.render('pages.media.show', { media: image })
+      ? image
       : response.notFound()
-  }
-
-  async renderUpload ({ view }) {
-    return view.render('pages.media.upload')
   }
 
   async upload ({ request }) {
@@ -66,9 +62,7 @@ class MediaController {
             ContentType: 'image/jpeg',
             ContentDisposition: `inline; filename=${savedImage.hash}.${savedImage.extension}`,
           })
-
       } catch (error) {
-        console.log(error)
         return {
           status: 'error',
           message: 'One or more uploads failed to complete, please check the uploaded files and try again.',
@@ -96,8 +90,7 @@ class MediaController {
     media.merge(_.pick(request._data, ['alt_text']))
     await media.save()
     await this._clearCachedMedia(media.hash)
-    session.flash({ status: 'success', message: 'Media updated successfully.' })
-    return response.redirect(`/admin/media/${media.hash}`)
+    return { status: 'success', media }
   }
 
   async destroy ({ params: { hash }, response, session }) {
@@ -109,19 +102,7 @@ class MediaController {
     await media.delete()
     session.flash({ status: 'success', message: 'Media deleted successfully.' })
     await this._clearCachedMedia()
-    return response.redirect('/admin/media')
-  }
-
-  async apiIndex ({ view }) {
-    return Cache.remember('images', 30, async () => Image.all())
-  }
-
-  async apiShow ({ params: { hash }, response, view }) {
-    const media = await this._getMedia({ hash })
-
-    return (media != null)
-      ? media
-      : response.notFound()
+    return { status: 'success' }
   }
 
   async _getMedia ({ hash }) {
@@ -134,12 +115,10 @@ class MediaController {
       .where({ hash })
       .first()
 
-    if (image != null) {
-      await Cache.put(`image:${hash}`, image.toJSON(), 30)
-      return image.toJSON()
-    }
+    if (image == null) return null
 
-    return null
+    await Cache.put(`image:${hash}`, image.toJSON(), 30)
+    return image.toJSON()
   }
 
   async _clearCachedMedia (hash = null) {
