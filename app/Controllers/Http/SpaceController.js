@@ -56,10 +56,10 @@ class SpaceController {
     return response.notFound()
   }
 
-  async destroy ({ params: { slug } }) {
+  async destroy ({ params: { id } }) {
     const space = await Space
       .query()
-      .where({ slug })
+      .where({ id })
       .first()
     await space.delete()
     await this._clearCachedSpaces()

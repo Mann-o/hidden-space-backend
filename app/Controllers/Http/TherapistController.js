@@ -73,10 +73,10 @@ class TherapistController {
     return response.notFound()
   }
 
-  async destroy ({ params: { slug } }) {
+  async destroy ({ params: { id } }) {
     const therapists = await Therapist
       .query()
-      .where({ slug })
+      .where({ id })
       .first()
     await therapists.delete()
     await this._clearCachedTherapists()

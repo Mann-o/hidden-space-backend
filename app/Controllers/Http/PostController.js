@@ -44,11 +44,12 @@ class PostController {
     return { status: 'success', post }
   }
 
-  async destroy ({ params: { slug }, response, session }) {
+  async destroy ({ params: { id } }) {
     const post = await Post
       .query()
-      .where({ slug })
+      .where({ id })
       .first()
+
     await post.delete()
 
     await this._clearCachedPosts()

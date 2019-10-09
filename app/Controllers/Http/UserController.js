@@ -74,21 +74,23 @@ class UserController {
     return response.notFound()
   }
 
-  async destroy ({ auth, params: { username }, response, session }) {
+  async destroy ({ auth, params: { id } }) {
     const authenticatedUser = await auth.getUser()
-    if (authenticatedUser.username === username) {
-      session.flash({ status: 'error', message: 'Unable to delete the user you are currently logged in as' })
-      return response.redirect(`/admin/users/${authenticatedUser.username}`)
-    }
-
     const user = await User
       .query()
-      .where({ username })
+      .where({ id })
       .first()
+
+    if (authenticatedUser.username === user.toJSON().username) {
+      return {
+        status: 'error',
+        message: 'Unable to delete the user you are currently logged in as',
+      }
+    }
+
     await user.delete()
-    session.flash({ status: 'success', message: 'User deleted successfully.' })
     await this._clearCachedUsers()
-    return response.redirect('/admin/users')
+    return { status: 'success' }
   }
 
   async roles ({ params: { id: role_id } }) {
