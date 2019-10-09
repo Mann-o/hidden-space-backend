@@ -93,14 +93,13 @@ class MediaController {
     return { status: 'success', media }
   }
 
-  async destroy ({ params: { hash }, response, session }) {
+  async destroy ({ params: { id }, session }) {
     const media = await Image
       .query()
-      .where({ hash })
+      .where({ id })
       .first()
     await Drive.disk('spaces').delete(`hidden-space-images/${media.hash}.${media.extension}`)
     await media.delete()
-    session.flash({ status: 'success', message: 'Media deleted successfully.' })
     await this._clearCachedMedia()
     return { status: 'success' }
   }
