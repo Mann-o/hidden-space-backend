@@ -16,8 +16,8 @@ class Therapist extends BaseModel {
       .pivotTable('spaces_therapists')
   }
 
-  image () {
-    return this.hasOne('Image', 'image_id', 'id')
+  images () {
+    return this.hasMany('Image', 'id', 'model_id')
   }
 
   getFullName () {

@@ -24,7 +24,9 @@ class Space extends BaseModel {
   }
 
   getAddress () {
-    return `${this.building_name}, ${this.street_address}`
+    return (this.building_name == null)
+      ? this.street_address
+      : `${this.building_name}, ${this.street_address}`
   }
 }
 

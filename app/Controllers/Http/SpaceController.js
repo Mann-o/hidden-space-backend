@@ -5,9 +5,10 @@ const Space = use('Space')
 const { validateAll } = use('Validator')
 
 class SpaceController {
-  async index () {
-    const spaces = await Cache.remember('spaces', 30, async () => Space.all())
-    return spaces
+  index () {
+    return Cache.remember('spaces', 30, async () => {
+      return (await Space.query().fetch()).toJSON()
+    })
   }
 
   async show ({ params: { slug }, response }) {
@@ -62,7 +63,7 @@ class SpaceController {
       .where({ id })
       .first()
     await space.delete()
-    await this._clearCachedSpaces()
+    await this._clearCachedSpaces(space.toJSON().slug)
     return { status: 'success' }
   }
 

@@ -35,26 +35,6 @@ class User extends BaseModel {
   tokens () {
     return this.hasMany('Token')
   }
-
-  async sendVerificationEmail () {
-    const {
-      email_address,
-      email_verification_token,
-      has_verified_email_address,
-      username,
-    } = this
-
-    if (!has_verified_email_address && (email_verification_token != null)) {
-      const options = { username, email_address, email_verification_token }
-
-      await InlineMailer.send('emails.verify-email-address', options, (message) => {
-        message
-          .subject('HiddenSpace - Please confirm your email address!')
-          .from('noreply@thehiddenspace.co.uk', 'HiddenSpace')
-          .to(email_address)
-      })
-    }
-  }
 }
 
 module.exports = User

@@ -14,8 +14,6 @@ class TherapistsSchema extends Schema {
       table.string('email_address').notNullable().unique()
       table.string('telephone_number').nullable()
       table.text('biography').nullable()
-      table.integer('image_id').unsigned().index()
-      table.foreign('image_id').references('id').on('images').onDelete('cascade')
       table.timestamp('created').notNullable()
       table.timestamp('last_updated').nullable()
     })
