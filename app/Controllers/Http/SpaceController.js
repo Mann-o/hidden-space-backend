@@ -7,7 +7,11 @@ const { validateAll } = use('Validator')
 class SpaceController {
   index () {
     return Cache.remember('spaces', 30, async () => {
-      return (await Space.query().fetch()).toJSON()
+      return (await Space
+        .query()
+        .with('images')
+        .fetch()
+      ).toJSON()
     })
   }
 
@@ -74,6 +78,7 @@ class SpaceController {
 
     const space = await Space
       .query()
+      .with('images')
       .where({ slug })
       .first()
 

@@ -11,7 +11,7 @@ class TherapistController {
       return (
         await Therapist
           .query()
-          .with('image')
+          .with('images')
           .fetch()
       ).toJSON()
     })
@@ -90,7 +90,7 @@ class TherapistController {
 
     const therapist = await Therapist
       .query()
-      .with('image')
+      .with('images')
       .where({ slug })
       .first()
 

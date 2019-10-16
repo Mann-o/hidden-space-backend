@@ -15,6 +15,18 @@ class Image extends BaseModel {
     ]
   }
 
+  spaces () {
+    return this
+      .belongsToMany('Spaces')
+      .pivotTable('space_images')
+  }
+
+  therapists () {
+    return this
+      .belongsToMany('Therapist')
+      .pivotTable('therapist_images')
+  }
+
   getFullFilename () {
     return `${this.filename}.${this.extension}`
   }

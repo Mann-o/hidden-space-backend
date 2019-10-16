@@ -20,7 +20,9 @@ class Space extends BaseModel {
   }
 
   images () {
-    return this.hasMany('Image', 'id', 'model_id')
+    return this
+      .belongsToMany('Image')
+      .pivotTable('space_images')
   }
 
   getAddress () {
