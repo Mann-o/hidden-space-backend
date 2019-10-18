@@ -15,9 +15,15 @@ class Image extends BaseModel {
     ]
   }
 
+  post () {
+    return this
+      .belongsToMany('Post')
+      .pivotTable('post_images')
+  }
+
   spaces () {
     return this
-      .belongsToMany('Spaces')
+      .belongsToMany('Space')
       .pivotTable('space_images')
   }
 

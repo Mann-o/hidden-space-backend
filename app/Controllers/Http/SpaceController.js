@@ -1,15 +1,17 @@
 'use strict'
 
 const Cache = use('Cache')
+const Image = use('Image')
 const Space = use('Space')
-const { validateAll } = use('Validator')
+
+// const { Client } = require('@elastic/elasticsearch')
+// const client = new Client({ node: 'http://localhost:9200' })
 
 class SpaceController {
   index () {
     return Cache.remember('spaces', 30, async () => {
       return (await Space
         .query()
-        .with('images')
         .fetch()
       ).toJSON()
     })
@@ -21,10 +23,6 @@ class SpaceController {
     return (space != null)
       ? space
       : response.notFound()
-  }
-
-  create ({ view }) {
-    return view.render('pages.spaces.create')
   }
 
   async store ({ request }) {
@@ -46,6 +44,7 @@ class SpaceController {
       .query()
       .where({ id })
       .first()
+
     if (space != null) {
       space.merge(request.only([
         'slug',
@@ -58,6 +57,7 @@ class SpaceController {
       await this._clearCachedSpaces(space.slug)
       return { status: 'success', space }
     }
+
     return response.notFound()
   }
 
@@ -67,6 +67,33 @@ class SpaceController {
       .where({ id })
       .first()
     await space.delete()
+    await this._clearCachedSpaces(space.toJSON().slug)
+    return { status: 'success' }
+  }
+
+  async addImages ({ params: { id }, request }) {
+    const space = await Space
+      .query()
+      .where({ id })
+      .first()
+
+    await space.images().attach(request.input('image_ids'), (row) => {
+      row.created = new Date()
+      row.last_updated = new Date()
+    })
+
+    await this._clearCachedSpaces(space.toJSON().slug)
+    return { status: 'success' }
+  }
+
+  async removeImages ({ params: { id }, request }) {
+    const space = await Space
+      .query()
+      .where({ id })
+      .first()
+
+    await space.images().detach(request.input('image_ids'))
+
     await this._clearCachedSpaces(space.toJSON().slug)
     return { status: 'success' }
   }

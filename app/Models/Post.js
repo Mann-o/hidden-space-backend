@@ -12,7 +12,9 @@ class Post extends BaseModel {
   }
 
   images () {
-    return this.hasMany('Image', 'id', 'model_id')
+    return this
+      .belongsToMany('Image')
+      .pivotTable('post_images')
   }
 }
 

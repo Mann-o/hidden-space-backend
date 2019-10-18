@@ -7,15 +7,12 @@ const { validateAll } = use('Validator')
 
 class TherapistController {
   async index () {
-    const therapists = await Cache.remember('therapists', 30, async () => {
-      return (
-        await Therapist
-          .query()
-          .with('images')
-          .fetch()
+    return Cache.remember('therapists', 30, async () => {
+      return (await Therapist
+        .query()
+        .fetch()
       ).toJSON()
     })
-    return therapists
   }
 
   async show ({ params: { slug }, response }) {
@@ -24,11 +21,6 @@ class TherapistController {
     return (therapist != null)
       ? therapist
       : response.notFound()
-  }
-
-  async create ({ view }) {
-    const media = await Cache.remember('media', 30, async () => Image.all())
-    return view.render('pages.therapists.create', { media })
   }
 
   async store ({ request }) {
@@ -54,6 +46,7 @@ class TherapistController {
       .query()
       .where({ id })
       .first()
+
     if (therapist != null) {
       therapist.merge(request.only([
         'slug',
@@ -63,13 +56,13 @@ class TherapistController {
         'last_names',
         'email_address',
         'telephone_number',
-        'image_id',
         'biography',
       ]))
       await therapist.save()
       await this._clearCachedTherapists(therapist.slug)
       return { status: 'success', therapist }
     }
+
     return response.notFound()
   }
 
@@ -80,6 +73,33 @@ class TherapistController {
       .first()
     await therapists.delete()
     await this._clearCachedTherapists()
+    return { status: 'success' }
+  }
+
+  async addImages ({ params: { id }, request }) {
+    const therapist = await Therapist
+      .query()
+      .where({ id })
+      .first()
+
+    await therapist.images().attach(request.input('image_ids'), (row) => {
+      row.created = new Date()
+      row.last_updated = new Date()
+    })
+
+    await this._clearCachedTherapists(therapist.toJSON().slug)
+    return { status: 'success' }
+  }
+
+  async removeImages ({ params: { id }, request }) {
+    const therapist = await Therapist
+      .query()
+      .where({ id })
+      .first()
+
+    await therapist.images().detach(request.input('image_ids'))
+
+    await this._clearCachedTherapists(therapist.toJSON().slug)
     return { status: 'success' }
   }
 
