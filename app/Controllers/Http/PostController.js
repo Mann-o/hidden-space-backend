@@ -17,7 +17,10 @@ class PostController {
 
   async show ({ params: { slug }, response }) {
     const post = await this._getPost({ slug })
-    return (post != null) ? post : response.notFound()
+
+    return (post != null)
+      ? post
+      : response.notFound()
   }
 
   async store ({ request }) {
@@ -32,16 +35,25 @@ class PostController {
     return { status: 'success', post }
   }
 
-  async update ({ params: { slug }, request, response }) {
+  async update ({ params: { id }, request, response }) {
     const post = await Post
       .query()
-      .where({ slug })
+      .where({ id })
       .first()
-    if (post == null) return response.notFound()
-    post.merge(request._data)
-    await post.save()
-    await this._clearCachedPosts(post.slug)
-    return { status: 'success', post }
+
+    if (post != null) {
+      post.merge(request.only([
+        'slug',
+        'author_id',
+        'title',
+        'content',
+      ]))
+      await post.save()
+      await this._clearCachedPosts(post.slug)
+      return { status: 'success', post }
+    }
+
+    return response.notFound()
   }
 
   async destroy ({ params: { id } }) {
@@ -57,6 +69,33 @@ class PostController {
     return { status: 'success' }
   }
 
+  async addImages ({ params: { id }, request }) {
+    const post = await Post
+      .query()
+      .where({ id })
+      .first()
+
+    await post.images().attach(request.input('image_ids'), (row) => {
+      row.created = new Date()
+      row.last_updated = new Date()
+    })
+
+    await this._clearCachedPosts(post.toJSON().slug)
+    return { status: 'success' }
+  }
+
+  async removeImages ({ params: { id }, request }) {
+    const post = await Post
+      .query()
+      .where({ id })
+      .first()
+
+    await post.images().detach(request.input('image_ids'))
+
+    await this._clearCachedPosts(post.toJSON().slug)
+    return { status: 'success' }
+  }
+
   async _getPost ({ slug }) {
     const postInCache = await Cache.get(`post:${slug}`)
 
@@ -65,6 +104,7 @@ class PostController {
     const post = await Post
       .query()
       .with('author')
+      .with('images')
       .where({ slug })
       .first()
 
