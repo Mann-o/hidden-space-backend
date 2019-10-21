@@ -34,7 +34,7 @@
     "adonis-bundler": "^1.0.1",
     "adonis-cache": "^0.3.4",
     "adonis-kraken": "^1.0.1",
-    "aws-sdk": "^2.552.0",
+    "aws-sdk": "^2.553.0",
     "axios": "^0.19.0",
     "date-fns": "^2.5.1",
     "inline-css ": "^2.4.2",
