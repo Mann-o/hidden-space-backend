@@ -4,7 +4,7 @@ const { Command } = require('@adonisjs/ace')
 
 const Redis = use('Redis')
 
-class Up extends Command {
+class CacheClear extends Command {
   /**
    * The string used to call this command through ace
    */
@@ -20,7 +20,7 @@ class Up extends Command {
   }
 
   /**
-   * Deletes a `down` file in the application root if one exists.
+   * Deletes all cached data
    */
   async handle () {
     try {
@@ -33,4 +33,4 @@ class Up extends Command {
   }
 }
 
-module.exports = Up
+module.exports = CacheClear

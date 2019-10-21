@@ -4,7 +4,7 @@ const { Command } = require('@adonisjs/ace')
 
 const Helpers = use('Helpers')
 
-class Down extends Command {
+class ApiDown extends Command {
   /**
    * The string used to call this command through ace
    */
@@ -34,4 +34,4 @@ class Down extends Command {
   }
 }
 
-module.exports = Down
+module.exports = ApiDown
