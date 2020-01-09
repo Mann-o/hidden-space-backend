@@ -12,6 +12,7 @@ class SpaceController {
     return Cache.remember('spaces', 30, async () => {
       return (await Space
         .query()
+        .with('images')
         .fetch()
       ).toJSON()
     })

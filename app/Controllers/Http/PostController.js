@@ -9,6 +9,7 @@ class PostController {
       return (await Post
         .query()
         .with('author')
+        .with('images')
         .fetch()
       ).toJSON()
     })

@@ -10,6 +10,7 @@ class TherapistController {
     return Cache.remember('therapists', 30, async () => {
       return (await Therapist
         .query()
+        .with('images')
         .fetch()
       ).toJSON()
     })
