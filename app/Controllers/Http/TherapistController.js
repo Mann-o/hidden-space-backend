@@ -49,6 +49,7 @@ class TherapistController {
       .first()
 
     if (therapist != null) {
+      await this._clearCachedTherapists(therapist.slug)
       therapist.merge(request.only([
         'slug',
         'gender',
@@ -60,7 +61,6 @@ class TherapistController {
         'biography',
       ]))
       await therapist.save()
-      await this._clearCachedTherapists(therapist.slug)
       return { status: 'success', therapist }
     }
 

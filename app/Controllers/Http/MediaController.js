@@ -81,19 +81,19 @@ class MediaController {
     }
   }
 
-  async update ({ params: { hash }, request, response, session }) {
+  async update ({ params: { hash }, request, response }) {
     const media = await Image
       .query()
       .where({ hash })
       .first()
     if (media == null) return response.notFound()
-    media.merge(_.pick(request._data, ['alt_text']))
+    media.merge(request.only(['filename', 'alt_text']))
     await media.save()
     await this._clearCachedMedia(media.hash)
     return { status: 'success', media }
   }
 
-  async destroy ({ params: { id }, session }) {
+  async destroy ({ params: { id } }) {
     const media = await Image
       .query()
       .where({ id })

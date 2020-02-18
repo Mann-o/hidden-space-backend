@@ -3,6 +3,7 @@
 const _ = require('lodash')
 
 const Cache = use('Cache')
+const Hash = use('Hash')
 const Permission = use('Permission')
 const Role = use('Role')
 const User = use('User')
@@ -14,7 +15,7 @@ class UserController {
     return users
   }
 
-  async show ({ params: { username }, response, view }) {
+  async show ({ params: { username }, response }) {
     const user = await this._getUser({ username })
 
     return (user != null)
@@ -59,18 +60,19 @@ class UserController {
     return response.redirect('/admin/users')
   }
 
-  async update ({ params: { username }, request, response, session }) {
+  async update ({ params: { id }, request, response }) {
     const user = await User
       .query()
-      .where({ username })
+      .where({ id })
       .first()
+
     if (user != null) {
-      user.merge(request._data)
+      await this._clearCachedUsers(user.username)
+      user.merge(request.only(['username', 'email_address', 'has_verified_email_address']))
       await user.save()
-      await this._clearCachedUsers(user.slug)
-      session.flash({ status: 'success', message: 'User updated successfully.' })
-      return response.redirect(`/admin/users/${user.username}`)
+      return { status: 'success', user }
     }
+
     return response.notFound()
   }
 
@@ -91,6 +93,21 @@ class UserController {
     await user.delete()
     await this._clearCachedUsers()
     return { status: 'success' }
+  }
+
+  async resetPassword ({ params: { id }, request }) {
+    const user = await User
+      .query()
+      .where({ id })
+      .first()
+
+    if (user != null) {
+      user.password = await Hash.make(request.input('new_password'))
+      await user.save()
+      return { status: 'success' }
+    }
+
+    return response.notFound()
   }
 
   async roles ({ params: { id: role_id } }) {

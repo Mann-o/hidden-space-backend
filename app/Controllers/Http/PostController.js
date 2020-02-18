@@ -43,6 +43,7 @@ class PostController {
       .first()
 
     if (post != null) {
+      await this._clearCachedPosts(post.slug)
       post.merge(request.only([
         'slug',
         'author_id',
@@ -50,7 +51,6 @@ class PostController {
         'content',
       ]))
       await post.save()
-      await this._clearCachedPosts(post.slug)
       return { status: 'success', post }
     }
 

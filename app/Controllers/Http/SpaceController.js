@@ -4,9 +4,6 @@ const Cache = use('Cache')
 const Image = use('Image')
 const Space = use('Space')
 
-// const { Client } = require('@elastic/elasticsearch')
-// const client = new Client({ node: 'http://localhost:9200' })
-
 class SpaceController {
   index () {
     return Cache.remember('spaces', 30, async () => {
@@ -47,6 +44,7 @@ class SpaceController {
       .first()
 
     if (space != null) {
+      await this._clearCachedSpaces(space.slug)
       space.merge(request.only([
         'slug',
         'property_number',
@@ -55,7 +53,6 @@ class SpaceController {
         'city',
       ]))
       await space.save()
-      await this._clearCachedSpaces(space.slug)
       return { status: 'success', space }
     }
 
