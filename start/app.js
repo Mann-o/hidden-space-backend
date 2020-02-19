@@ -42,6 +42,7 @@ const providers = [
   '@adonisjs/validator/providers/ValidatorProvider',
   '@adonisjs/framework/providers/ViewProvider',
   '@adonisjs/drive/providers/DriveProvider',
+  '@adonisjs/vow/providers/VowProvider',
   'adonis-acl/providers/AclProvider',
   'adonis-bundler/providers/BundlerProvider',
   'adonis-cache/providers/CacheProvider',
