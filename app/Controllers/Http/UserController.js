@@ -23,41 +23,16 @@ class UserController {
       : response.notFound()
   }
 
-  async store ({ request, response, session }) {
+  async store ({ request }) {
     const data = request.only([
       'username',
       'email_address',
       'password',
-      'password_confirmation',
     ])
 
-    const validation = await validateAll(data, {
-      username: 'required|unique:users,username',
-      email_address: 'required|email',
-      password: 'required|min:8',
-      password_confirmation: 'required_if:password|same:password',
-    }, {
-      'username.required': 'Please provide a username',
-      'username.unique': 'Username already in use',
-      'email_address.required': 'Please provide an email address',
-      'email_address.email': 'Email address must be valid',
-      'password.required': 'Please provide a password',
-      'password.min': 'Password must be at least 8 characters',
-      'password_confirmation.required_if': 'Please re-enter the password',
-      'password_confirmation.same': 'Re-enter password field does not match password field',
-    })
-
-    if (validation.fails()) {
-      session
-        .withErrors(validation.messages())
-        .flashAll()
-      return response.redirect('back')
-    }
-
-    await User.create(_.omit(data, ['password_confirmation']))
+    await User.create(data)
     await this._clearCachedUsers()
-    session.flash({ status: 'success', message: 'User created successfully.' })
-    return response.redirect('/admin/users')
+    return { status: 'success' }
   }
 
   async update ({ params: { id }, request, response }) {

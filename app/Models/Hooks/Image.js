@@ -1,6 +1,5 @@
 'use strict'
 
-const Hash = use('Hash')
 const uuid = require('uuid/v4')
 
 const ImageHooks = {

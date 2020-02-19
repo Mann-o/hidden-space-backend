@@ -1,15 +1,12 @@
 'use strict'
 
 const BaseModel = use('BaseModel')
-const Env = use('Env')
-const InlineMailer = use('HiddenSpace/InlineMailer')
 
 class User extends BaseModel {
   static boot () {
     super.boot()
     this.addTrait('HashProperties', { onUpdate: false })
     this.addTrait('GenerateUUID', { field: 'email_verification_token' })
-    this.addHook('afterCreate', 'User.sendVerificationEmail')
   }
 
   static get traits () {
