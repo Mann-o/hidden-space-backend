@@ -6,7 +6,6 @@ class Therapist extends BaseModel {
   static get computed () {
     return [
       'full_name',
-      'full_name_with_title',
     ]
   }
 
@@ -25,10 +24,6 @@ class Therapist extends BaseModel {
 
   getFullName () {
     return `${this.first_names} ${this.last_names}`
-  }
-
-  getFullNameWithTitle () {
-    return `${this.title} ${this.first_names} ${this.last_names}`
   }
 }
 

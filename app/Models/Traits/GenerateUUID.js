@@ -1,6 +1,6 @@
 'use strict'
 
-const uuid4 = require('uuid/v4')
+const { v4: uuidv4 } = require('uuid')
 
 class GenerateUUID {
   /**
@@ -18,12 +18,12 @@ class GenerateUUID {
     }
 
     Model.addHook('beforeCreate', async (model) => {
-      model[options.field] = uuid4()
+      model[options.field] = uuidv4()
     })
 
     if (options.onUpdate) {
       Model.addHook('beforeUpdate', async (model) => {
-        model[options.field] = uuid4()
+        model[options.field] = uuidv4()
       })
     }
   }

@@ -28,7 +28,7 @@ class TherapistController {
     const data = request.only([
       'slug',
       'gender',
-      'title',
+      'treatment',
       'first_names',
       'last_names',
       'email_address',
@@ -53,7 +53,7 @@ class TherapistController {
       therapist.merge(request.only([
         'slug',
         'gender',
-        'title',
+        'treatment',
         'first_names',
         'last_names',
         'email_address',

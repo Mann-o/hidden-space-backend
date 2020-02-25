@@ -1,6 +1,6 @@
 'use strict'
 
-const uuid = require('uuid/v4')
+const { v4: uuidv4 } = require('uuid')
 
 const ImageHooks = {
   /**
@@ -11,7 +11,7 @@ const ImageHooks = {
    * @param {object} User
    */
   addHashProperty: async (Image) => {
-    Image.hash = uuid().replace(/-/g, '')
+    Image.hash = uuidv4().replace(/-/g, '')
   }
 }
 

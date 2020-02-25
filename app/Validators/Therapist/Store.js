@@ -7,7 +7,6 @@ class TherapistStoreValidator extends BaseValidator {
     return {
       slug: 'required|unique:spaces,slug',
       gender: 'required|in:male,female',
-      title: 'required|min:2',
       first_names: 'required|min:2',
       last_names: 'required|min:2',
       email_address: 'required|email',
@@ -20,8 +19,6 @@ class TherapistStoreValidator extends BaseValidator {
       'slug.unique': 'Slug is already in use',
       'gender.required': 'Gender field is required',
       'gender.in': 'Gender field must be either Male or Female',
-      'title.required': 'Title field is required',
-      'title.min': 'Title field must be 2 or more characters in length',
       'first_names.required': 'First Name(s) field is required',
       'first_names.min': 'First Name(s) field must be 2 or more characters in length',
       'last_names.required': 'Last Name(s) field is required',

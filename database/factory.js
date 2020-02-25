@@ -59,11 +59,11 @@ Factory.blueprint('Therapist', (faker, i) => {
   return {
     slug: helpers.slugify(`${firstNames} ${lastNames}`).toLowerCase(),
     gender: faker.gender().toLowerCase(),
-    title: name.prefix().replace(/\./g, ''),
     first_names: firstNames,
     last_names: lastNames,
     email_address: `test${(i + 1)}@tynesidegroup.com`,
     telephone_number: '01234567890',
     biography: lorem.paragraphs(random.number({ min: 1, max: 5 })),
+    treatment: lorem.words,
   }
 })
