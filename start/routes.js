@@ -14,7 +14,7 @@ Route
   ])
 
 
-  Route
+Route
   .group('admin', () => {
     require('./routes/admin/auth')
     require('./routes/admin/base')
@@ -51,7 +51,7 @@ Route
     // Route.post('posts/:slug', 'PostController.update').middleware(['strip-csrf-from-post-data', 'json-deserializer'])
     // Route.get('posts/:slug/delete', 'PostController.destroy')
   })
-  .prefix('api/v1/admin')
+  .prefix('/api/v1/admin')
   .middleware([
     'check-app-key',
     'json-deserializer',

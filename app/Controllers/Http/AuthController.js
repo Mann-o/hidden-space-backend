@@ -6,12 +6,12 @@ class AuthController {
   async login ({ auth, request, response }) {
     const { login_id, password } = request.post()
 
-      const user = await User
-        .query()
-        .select(['id', 'username', 'email_address', 'last_logged_in'])
-        .whereRaw('lower(username) = ?', login_id.toLowerCase())
-        .orWhereRaw('lower(email_address) = ?', login_id.toLowerCase())
-        .first()
+    const user = await User
+      .query()
+      .select(['id', 'username', 'email_address', 'last_logged_in'])
+      .whereRaw('lower(username) = ?', login_id.toLowerCase())
+      .orWhereRaw('lower(email_address) = ?', login_id.toLowerCase())
+      .first()
 
     try {
       if (user != null) {

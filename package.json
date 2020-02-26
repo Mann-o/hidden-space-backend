@@ -50,6 +50,9 @@
     "faker": "^4.1.0",
     "stylus": "^0.54.7"
   },
+  "resolutions": {
+    "knex": "^0.20.10"
+  },
   "autoload": {
     "App": "./app"
   },

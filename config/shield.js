@@ -1,5 +1,7 @@
 'use strict'
 
+const Env = use('Env')
+
 const ShieldConfig = {
   csp: {
     directives: {
@@ -19,7 +21,7 @@ const ShieldConfig = {
   noopen: true,
 
   csrf: {
-    enable: true,
+    enable: (Env.get('NODE_ENV') !== 'testing'),
     methods: [
       'POST',
       'PUT',
@@ -28,7 +30,6 @@ const ShieldConfig = {
     ],
     filterUris: [
       /^\/(api)\/v1\/[a-z0-9.\-_]+\/?./,
-      '/admin/media/upload',
     ],
     cookieOptions: {
       httpOnly: false,
