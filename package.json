@@ -36,7 +36,7 @@
     "adonis-cache": "^0.3.4",
     "adonis-kraken": "^1.0.1",
     "aws-sdk": "^2.625.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "cross-env": "^7.0.0",
     "date-fns": "^2.10.0",
     "inline-css ": "^2.6.3",
